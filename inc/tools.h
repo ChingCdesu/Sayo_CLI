@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <cstring> // for strcat()
 #include <fstream>
@@ -47,21 +47,22 @@ using std::wcout;
 using std::wifstream;
 using std::wstring;
 
-void unicodeToUTF8(const wstring &src, string &result);
+void unicodeToUTF8(const wstring& src, string& result);
+string unicodeToUTF8(const wstring& src);
 
-string unicodeToUTF8(const wstring &src);
 
-std::string UnicodeToUTF8(const std::wstring &wstr);
+void unicodeToGB2312(const wstring& wstr, string& result);
 
-std::wstring UTF8ToUnicode(const std::string &str);
+void utf8ToUnicode(const string& src, wstring& result);
 
-std::string UnicodeToANSI(const std::wstring &wstr);
+void gb2312ToUnicode(const string& src, wstring& result);
 
-std::wstring ANSIToUnicode(const std::string &str);
 
-std::string UTF8ToANSI(const std::string &str);
+string unicodeToGB2312(const wstring& wstr);
 
-std::string ANSIToUTF8(const std::string &str);
+wstring utf8ToUnicode(const string& src);
+
+wstring gb2312ToUnicode(const string& src);
 
 unsigned long str2addr(const char *ip_addr);
 
