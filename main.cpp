@@ -76,7 +76,6 @@ int main(int argc, char **argv) {
 
 int httpServer() {
 #ifndef WIN32
-    printf("%d\n", SOCK_STREAM);
     int ss = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in server_sockaddr;
     server_sockaddr.sin_family = AF_INET;
@@ -94,7 +93,7 @@ int httpServer() {
     struct sockaddr_in client_addr;
     socklen_t length = sizeof(client_addr);
     char buffer[1024];
-    cout << "http://127.0.0.1:"<< a_server_port << endl;
+    cout << "open http://127.0.0.1:" << a_server_port << " to setting..." << endl;
     while (1) {
         using namespace std;
         int conn;
@@ -144,6 +143,7 @@ int httpServer() {
     cout << "设定过程中请不要关闭本程序！" << endl;
     cout << "设定过程中请不要关闭本程序！！" << endl;
     cout << "设定过程中请不要关闭本程序！！！" << endl;
+    cout << "open http://127.0.0.1:" << a_server_port << " to setting..." << endl;
     wchar_t url[64];
     swprintf(url, 64, L"http://127.0.0.1:%d", a_server_port);
     ShellExecute(0, 0, url, 0, 0, 0);
@@ -222,32 +222,63 @@ int http(int sClient, in_addr_t sClinentAddr) {
                         req.response_body = O2link[i].Connect(root["path"].asString(), i);
                     } else if (cmd == "disconnect") {
                         req.response_body = O2link[root["session"].asInt()].Disconnect();
-                    } else if (cmd == "buttons") {
+                    }
+                    else if (cmd == "buttons")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Buttons(root);
-                    } else if (cmd == "lighting") {
+                    }
+                    else if (cmd == "key_map")
+                    {
+                        req.response_body = O2link[root["session"].asInt()].Key_map(root);
+                    }
+                    else if (cmd == "lighting")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Lighting(root);
-                    } else if (cmd == "script") {
+                    }
+                    else if (cmd == "script")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Script(root);
-                    } else if (cmd == "script_sw") {
+                    }
+                    else if (cmd == "script_sw")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Script_sw(root);
-                    } else if (cmd == "dev_id") {
+                    }
+                    else if (cmd == "dev_id")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Dev_id(root);
-                    } else if (cmd == "dev_name") {
+                    }
+                    else if (cmd == "dev_name")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Dev_name(root);
-                    } else if (cmd == "ok_pwd") {
+                    }
+                    else if (cmd == "ok_pwd")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Ok_pwd(root);
-                    } else if (cmd == "save") {
+                    }
+                    else if (cmd == "save")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Save();
-                    } else if (cmd == "api_code") {
+                    }
+                    else if (cmd == "api_code")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Api(root);
-                    } else if (cmd == "bootloader_code") {
+                    }
+#ifdef WIN32
+                    else if (cmd == "string_gbk")
+                    {
+                        req.response_body = O2link[root["session"].asInt()].String_gbk(root);
+                    }
+#endif // WIN32
+                    else if (cmd == "bootloader_code")
+                    {
                         req.response_body = O2link[root["session"].asInt()].Bootloader(root);
-                    } /*
-                     else if (cmd == "firmware_write")
-                     {
-                             req.response_body = O2link[root["session"].asInt()].Firmware_write(root);
-                     }*/
-                    else {
+                    }/*
+                    else if (cmd == "firmware_write")
+                    {
+                        req.response_body = O2link[root["session"].asInt()].Firmware_write(root);
+                    }*/
+                    else
+                    {
                         req.response_body = "{\"status\":-1,\"message\":\"No cmd parameters found\"}";
                     }
                 }
@@ -290,8 +321,14 @@ int http(int sClient, in_addr_t sClinentAddr) {
                             req.content_type = "text/html;charset=utf-8";
                         else if (file_type == "js")
                             req.content_type = "application/javascript";
+                        else if (file_type == "css")
+                            req.content_type = "text/css";
+                        else if (file_type == "xml")
+                            req.content_type = "text/xml";
                         else if (file_type == "json")
                             req.content_type = "application/json;charset=utf-8";
+                        else if (file_type == "svg")
+                            req.content_type = "image/svg+xml";
                         else
                             req.content_type = "application/octet-stream";
                     }
